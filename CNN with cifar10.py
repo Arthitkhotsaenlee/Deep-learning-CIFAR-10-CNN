@@ -3,12 +3,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from keras.datasets import cifar10
 import sys
-from keras.models import Model
-from keras.layers import Dense, Activation, Permute, Dropout
-from keras.layers import Conv2D, MaxPooling2D, AveragePooling2D
-from keras.layers import Input, Flatten
-
-
+from tensorflow.python.keras.models import Model
+from tensorflow.python.keras.layers import Dense, Activation, Permute, Dropout, Conv2D, MaxPooling2D
+from tensorflow.python.keras.layers import AveragePooling2D, Input, Flatten
+from tensorflow.python.keras.callbacks import ModelCheckpoint
 
 def load_dataset():
     (X_train, y_train), (X_test, y_test) = cifar10.load_data()
@@ -85,6 +83,9 @@ if __name__ == "__main__":
     # get model
     model = CNN_model()
     # compile models
+    # Model check point
+    model_path = "CIFAR-10.h5"
+    checkpoint = ModelCheckpoint(filepath= model_path)
     model.compile(loss='categorical_crossentropy',
                   optimizer='adam',
                   metrics='accuracy')
@@ -94,6 +95,7 @@ if __name__ == "__main__":
                         batch_size=32,
                         epochs=500,
                         validation_split=0.25,
+                        callbacks=[checkpoint],
                         validation_data=(X_test,y_test),
                         verbose=True)
     _, acc = model.evaluate(X_test,y_test, verbose=False)
