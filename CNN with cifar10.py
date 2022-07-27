@@ -3,10 +3,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from keras.datasets import cifar10
 import sys
-from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Dense, Activation, Permute, Dropout
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, AveragePooling2D
-from tensorflow.keras.layers import Input, Flatten
+from keras.models import Model
+from keras.layers import Dense, Activation, Permute, Dropout
+from keras.layers import Conv2D, MaxPooling2D, AveragePooling2D
+from keras.layers import Input, Flatten
 
 
 
@@ -58,12 +58,9 @@ def CNN_model(input_shape=(32,32,3)):
     last_ly = Dense(32, activation="relu", kernel_initializer="he_uniform")(last_ly)
     last_ly = Dropout(0.2)(last_ly)
     output1 = Dense(10, activation="softmax", kernel_initializer="he_uniform")(last_ly)
-    model = Model(input1,output1)
-    # compile model
-    model = model.compile(loss='categorical_crossentropy',
-                                      optimizer='adam',
-                                      metrics='accuracy')
-    return model
+
+    return Model(inputs=input1,outputs=output1)
+
 
 def summerize_model(history):
     # plot loss
@@ -87,6 +84,10 @@ if __name__ == "__main__":
     X_train, y_train, X_test, y_test = load_dataset()
     # get model
     model = CNN_model()
+    # compile models
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='adam',
+                  metrics='accuracy')
     # fit model
     history = model.fit(x=X_train,
                         y=y_train,
@@ -94,7 +95,7 @@ if __name__ == "__main__":
                         epochs=500,
                         validation_split=0.25,
                         validation_data=(X_test,y_test),
-                        verbose=False)
+                        verbose=True)
     _, acc = model.evaluate(X_test,y_test, verbose=False)
     print(">%.3f"%(acc*100))
     summerize_model(history)
