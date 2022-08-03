@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from keras.datasets import cifar10
 import sys
 from tensorflow.python.keras.models import Model
-from tensorflow.python.keras.layers import Dense, Activation, Permute, Dropout, Conv2D, MaxPooling2D
+from tensorflow.python.keras.layers import Dense, Activation, Dropout, Conv2D, MaxPooling2D
 from tensorflow.python.keras.layers import AveragePooling2D, Input, Flatten
 from tensorflow.python.keras.callbacks import ModelCheckpoint
 
@@ -94,7 +94,7 @@ if __name__ == "__main__":
                         y=y_train,
                         batch_size=32,
                         epochs=500,
-                        validation_split=0.25,
+                        validation_split=0.25,Noisre
                         callbacks=[checkpoint],
                         validation_data=(X_test,y_test),
                         verbose=True)
